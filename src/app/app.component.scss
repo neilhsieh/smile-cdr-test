@@ -1,0 +1,28 @@
+.table-wrapper {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
+table {
+  width: 95%;
+  color: #333;
+  border-spacing: 0;
+  th,
+  td {
+    padding: 10px;
+  }
+
+  thead {
+    tr {
+      text-align: left;
+      border-bottom: 2px solid grey;
+    }
+  }
+  tbody {
+    tr {
+      &:nth-of-type(odd) {
+        background-color: #eee;
+      }
+    }
+  }
+}
