@@ -9,10 +9,33 @@ import { ApiService } from "../app/services/api-service.service";
 export class AppComponent implements OnInit {
   title = "fhir-app-test";
   patientList;
+  requestRunTime = 0;
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
+    const timerStart = window.performance.now();
+    console.log(timerStart);
+
+    this.getPatients();
+    /* --------------------------------------- 
+    Uncomment below code to output retrieved database 
+    youngest patients chronologically ordered 
+    ------------------------------------------ */
+    // this.getEarlistDatabasePatient();
+
+    /* --------------------------------------- 
+    Uncomment below code to show patient resources whose birthdate 
+    are between 1960 and 1965 (inclusive) 
+    ------------------------------------------ */
+    // this.getBirthDateSortedPatients();
+    const timerEnd = window.performance.now();
+    console.log("timer end", timerEnd);
+
+    this.requestRunTime = timerEnd - timerStart;
+  }
+
+  getPatients() {
     this.apiService.getPatients().subscribe((data) => {
       const filteredPatientList = data.entry.sort((a, b) => {
         if (a.resource.birthDate && !b.resource.birthDate) {
@@ -29,23 +52,20 @@ export class AppComponent implements OnInit {
       });
 
       this.patientList = filteredPatientList;
+      console.log("done getting patients");
+
       // console.log(filteredPatientList);
     });
+    console.log("in method", window.performance.now());
+  }
 
-    /* --------------------------------------- 
-    Uncomment below code to output retrieved database 
-    youngest patients chronologically ordered 
-    ------------------------------------------ */
-
+  getEarlistDatabasePatient() {
     // this.apiService.getPatientOrderedByDate().subscribe((data) => {
     //   this.patientList = data.entry;
     // });
+  }
 
-    /* --------------------------------------- 
-    Uncomment below code to show patient resources whose birthdate 
-    are between 1960 and 1965 (inclusive) 
-    ------------------------------------------ */
-
+  getBirthDateSortedPatients() {
     // this.apiService.getPatientByBirthDate().subscribe((data) => {
     //   this.patientList = data.entry;
     // });

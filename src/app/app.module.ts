@@ -6,9 +6,12 @@ import { CommonModule } from "@angular/common";
 
 import { AppComponent } from "./app.component";
 import { ApiService } from "./services/api-service.service";
+import { FooterComponent } from "./components/footer/footer.component";
+import { MillisecondsPipe } from "./pipe/milliseconds.pipe";
+import { SearchComponent } from './components/search/search.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, FooterComponent, MillisecondsPipe, SearchComponent],
   imports: [BrowserModule, HttpClientModule, RouterModule, CommonModule],
   providers: [ApiService],
   bootstrap: [AppComponent],
