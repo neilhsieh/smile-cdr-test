@@ -28,28 +28,40 @@ export class AppComponent implements OnInit {
 
     this.requestRunTime = timerEnd - timerStart;
   }
+  checkNameValid(name: string) {
+    if (RegExp(/[^a-zA-Z ]/g).test(name)) {
+      this.nameError = true;
+    } else {
+      this.nameError = false;
+    }
+  }
+
+  checkDateValid(date: string) {
+    if (RegExp(/[^0-9/]/g).test(date)) {
+      this.dateError = true;
+    } else {
+      this.dateError = false;
+    }
+  }
 
   search(name: string, birthDate: string) {
-    const checkBirthYear = birthDate
+    const isValidBirthYear = birthDate
       ? (birthDate.match(/\//g) || []).length === 2 &&
         RegExp(/[^0-9]/g).test(birthDate.split("/")[0]) &&
         birthDate.split("/")[0].length === 4
       : true;
-    const checkBirthMonth = birthDate
+    const isValidBirthMonth = birthDate
       ? (birthDate.match(/\//g) || []).length === 2 &&
         RegExp(/[^0-9]/g).test(birthDate.split("/")[0]) &&
         birthDate.split("/")[1].length === 2
       : true;
-    const checkBirthDate = birthDate
+    const isValidBirthDate = birthDate
       ? (birthDate.match(/\//g) || []).length === 2 &&
         RegExp(/[^0-9]/g).test(birthDate.split("/")[0]) &&
         birthDate.split("/")[2].length === 2
       : true;
-    console.log(checkBirthYear, checkBirthMonth, checkBirthDate);
-    if (RegExp(/[^a-zA-Z ]/g).test(name)) {
-      this.nameError = true;
-    }
-    if (!checkBirthYear || !checkBirthMonth || !checkBirthDate) {
+
+    if (!isValidBirthYear || !isValidBirthMonth || !isValidBirthDate) {
       this.dateError = true;
     }
     if (!this.nameError && !this.dateError) {

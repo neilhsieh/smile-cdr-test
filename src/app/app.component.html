@@ -1,7 +1,13 @@
 <div>
   <div class="search-wrapper">
     <label for="search_name">Search by first or last name:</label>
-    <input type="search" #searchName id="search_name" name="Full Name Search" />
+    <input
+      type="search"
+      #searchName
+      id="search_name"
+      name="Full Name Search"
+      (keyup)="checkNameValid($event.target.value)"
+    />
 
     <label for="search_birth">Search by birthdate:</label>
     <input
@@ -10,6 +16,7 @@
       id="search_birth"
       name="Date"
       placeholder="YYYY/MM/DD"
+      (keyup)="checkDateValid($event.target.value)"
     />
 
     <button (click)="search(searchName.value, searchBirth.value)" type="button">
@@ -23,7 +30,8 @@
         >Name cannot contain non-alphabetic characters</span
       >
       <span [ngClass]="dateError ? 'error-visible' : 'error-hide'"
-        >Name cannot contain non-alphabetic characters</span
+        >Name cannot contain non-alphabetic characters and has to be in the
+        following format: YYYY/MM/DD</span
       >
     </div>
   </div>
