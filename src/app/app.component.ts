@@ -12,6 +12,9 @@ export class AppComponent implements OnInit {
   requestRunTime = 0;
   nameError = false;
   dateError = false;
+
+  isSearching = false;
+
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
@@ -64,9 +67,12 @@ export class AppComponent implements OnInit {
     if (!isValidBirthYear || !isValidBirthMonth || !isValidBirthDate) {
       this.dateError = true;
     }
-    if (!this.nameError && !this.dateError) {
+    if (!this.nameError && !this.dateError && !this.isSearching) {
+      this.isSearching = true;
+
       this.apiService.getSearchedPatient(name, birthDate).subscribe((data) => {
         this.patientList = data.entry;
+        this.isSearching = false;
       });
     }
   }

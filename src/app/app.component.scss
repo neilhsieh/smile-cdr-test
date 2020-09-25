@@ -1,8 +1,11 @@
 .search-wrapper {
+  font-size: 16px;
   padding: 20px;
   input {
     margin-right: 20px;
-    padding: 5px;
+    padding: 10px 5px 10px 10px;
+    border: 1px solid #333;
+    border-radius: 4px;
   }
   label {
     margin-right: 15px;
@@ -12,12 +15,30 @@
     color: red;
     font-size: 20px;
     font-weight: bold;
-    padding: 20px 0;
     .error-hide {
       display: none;
     }
     .error-visible {
       display: block;
+    }
+  }
+  .search-button {
+    position: relative;
+    border: 1px solid rgba(74, 112, 139, 0.8);
+    background-color: rgba(74, 112, 139, 0.8);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+    font-size: 16px;
+    &:hover {
+      cursor: pointer;
+      background-color: rgba(74, 112, 139, 1);
+      border-color: rgba(74, 112, 139, 1);
+    }
+    &.is-searching,
+    &.is-searching:hover {
+      background-color: #aeaeae;
     }
   }
 }
@@ -39,6 +60,9 @@ table {
   }
 
   thead {
+    th {
+      border-bottom: 1px solid #333;
+    }
     tr {
       text-align: left;
       border-bottom: 2px solid grey;
@@ -47,7 +71,7 @@ table {
   tbody {
     tr {
       &:nth-of-type(odd) {
-        background-color: #eee;
+        background-color: #f7f7f7;
       }
     }
   }

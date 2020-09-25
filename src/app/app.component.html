@@ -19,7 +19,12 @@
       (keyup)="checkDateValid($event.target.value)"
     />
 
-    <button (click)="search(searchName.value, searchBirth.value)" type="button">
+    <button
+      (click)="search(searchName.value, searchBirth.value)"
+      type="button"
+      class="search-button"
+      [ngClass]="isSearching ? 'is-searching' : ''"
+    >
       Search
     </button>
     <div class="error-messages">
