@@ -22,7 +22,8 @@ export class ApiService {
   }
 
   getPatientByBirthDate() {
-    const queryString = "?birthdate=ge1960-01-01&birthdate=le1965-12-31";
+    const queryString: string =
+      "?birthdate=ge1960-01-01&birthdate=le1965-12-31";
     return this.httpClient.get(
       environment.queryURI + "/Patient" + queryString,
       {
@@ -30,8 +31,18 @@ export class ApiService {
       }
     );
   }
-  getPatientOrderedByDate() {
-    const queryString = "?_sort=birthdate";
+  getSearchedPatient(name, date) {
+    let queryString: string;
+    if (name && date) {
+      queryString = `?name=${name}&birthdate=eq${date}`;
+    } else if (!name && date) {
+      queryString = `?birthdate=eq${date}`;
+    } else if (name && !date) {
+      queryString = `?name=${name}&`;
+    } else {
+      queryString = "";
+    }
+
     return this.httpClient.get(
       environment.queryURI + "/Patient" + queryString,
       {

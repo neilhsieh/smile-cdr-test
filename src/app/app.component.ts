@@ -10,19 +10,14 @@ export class AppComponent implements OnInit {
   title = "fhir-app-test";
   patientList;
   requestRunTime = 0;
-
+  nameError = false;
+  dateError = false;
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
     const timerStart = window.performance.now();
-    console.log(timerStart);
 
     this.getPatients();
-    /* --------------------------------------- 
-    Uncomment below code to output retrieved database 
-    youngest patients chronologically ordered 
-    ------------------------------------------ */
-    // this.getEarlistDatabasePatient();
 
     /* --------------------------------------- 
     Uncomment below code to show patient resources whose birthdate 
@@ -30,13 +25,43 @@ export class AppComponent implements OnInit {
     ------------------------------------------ */
     // this.getBirthDateSortedPatients();
     const timerEnd = window.performance.now();
-    console.log("timer end", timerEnd);
 
     this.requestRunTime = timerEnd - timerStart;
   }
 
+  search(name: string, birthDate: string) {
+    const checkBirthYear = birthDate
+      ? (birthDate.match(/\//g) || []).length === 2 &&
+        RegExp(/[^0-9]/g).test(birthDate.split("/")[0]) &&
+        birthDate.split("/")[0].length === 4
+      : true;
+    const checkBirthMonth = birthDate
+      ? (birthDate.match(/\//g) || []).length === 2 &&
+        RegExp(/[^0-9]/g).test(birthDate.split("/")[0]) &&
+        birthDate.split("/")[1].length === 2
+      : true;
+    const checkBirthDate = birthDate
+      ? (birthDate.match(/\//g) || []).length === 2 &&
+        RegExp(/[^0-9]/g).test(birthDate.split("/")[0]) &&
+        birthDate.split("/")[2].length === 2
+      : true;
+    console.log(checkBirthYear, checkBirthMonth, checkBirthDate);
+    if (RegExp(/[^a-zA-Z ]/g).test(name)) {
+      this.nameError = true;
+    }
+    if (!checkBirthYear || !checkBirthMonth || !checkBirthDate) {
+      this.dateError = true;
+    }
+    if (!this.nameError && !this.dateError) {
+      this.apiService.getSearchedPatient(name, birthDate).subscribe((data) => {
+        this.patientList = data.entry;
+      });
+    }
+  }
+
   getPatients() {
     this.apiService.getPatients().subscribe((data) => {
+      console.log(data);
       const filteredPatientList = data.entry.sort((a, b) => {
         if (a.resource.birthDate && !b.resource.birthDate) {
           return 1;
@@ -52,22 +77,13 @@ export class AppComponent implements OnInit {
       });
 
       this.patientList = filteredPatientList;
-      console.log("done getting patients");
-
-      // console.log(filteredPatientList);
     });
-    console.log("in method", window.performance.now());
-  }
-
-  getEarlistDatabasePatient() {
-    // this.apiService.getPatientOrderedByDate().subscribe((data) => {
-    //   this.patientList = data.entry;
-    // });
   }
 
   getBirthDateSortedPatients() {
-    // this.apiService.getPatientByBirthDate().subscribe((data) => {
-    //   this.patientList = data.entry;
-    // });
+    this.apiService.getPatientByBirthDate().subscribe((data) => {
+      console.log(data);
+      this.patientList = data.entry;
+    });
   }
 }

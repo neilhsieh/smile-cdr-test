@@ -1,55 +1,87 @@
-<div class="table-wrapper">
-  <table>
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Family Name</th>
-        <th>Given Name</th>
-        <th>Gender</th>
-        <th>Date of Birth</th>
-        <th>Deceased Time (if applies)</th>
-        <th>Address (City, State, County)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let patient of patientList">
-        <td>{{ patient.resource.id }}</td>
-        <td
-          *ngIf="
-            patient.resource.name && patient.resource.name[0].family;
-            else emptyTd
-          "
-        >
-          {{ patient.resource.name[0].family }}
-        </td>
+<div>
+  <div class="search-wrapper">
+    <label for="search_name">Search by first or last name:</label>
+    <input type="search" #searchName id="search_name" name="Full Name Search" />
 
-        <td
-          *ngIf="
-            patient.resource.name && patient.resource.name[0].given;
-            else emptyTd
-          "
-        >
-          {{ patient.resource.name[0].given[0] }}
-        </td>
-        <td *ngIf="patient.resource.gender; else emptyTd">
-          {{ patient.resource.gender }}
-        </td>
-        <td *ngIf="patient.resource.birthDate; else emptyTd">
-          {{ patient.resource.birthDate }}
-        </td>
-        <td *ngIf="patient.resource.deceasedDateTime; else emptyTd">
-          {{ patient.resource.deceasedDateTime }}
-        </td>
+    <label for="search_birth">Search by birthdate:</label>
+    <input
+      #searchBirth
+      type="search"
+      id="search_birth"
+      name="Date"
+      placeholder="YYYY/MM/DD"
+    />
 
-        <td *ngIf="patient.resource.address; else emptyTd">
-          {{ patient.resource.address[0].city }},
-          {{ patient.resource.address[0].state }},
-          {{ patient.resource.address[0].country }}
-        </td>
-        <ng-template #emptyTd><td>-</td></ng-template>
-      </tr>
-    </tbody>
-  </table>
-  <!-- <div class="request-time">{{ requestRunTime }}</div> -->
+    <button (click)="search(searchName.value, searchBirth.value)" type="button">
+      Search
+    </button>
+    <div class="error-messages">
+      <span [ngClass]="nameError || dateError ? 'error-visible' : 'error-hide'"
+        >ERROR!</span
+      >
+      <span [ngClass]="nameError ? 'error-visible' : 'error-hide'"
+        >Name cannot contain non-alphabetic characters</span
+      >
+      <span [ngClass]="dateError ? 'error-visible' : 'error-hide'"
+        >Name cannot contain non-alphabetic characters</span
+      >
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Family Name</th>
+          <th>Given Name</th>
+          <th>Gender</th>
+          <th>Date of Birth</th>
+          <th>Deceased Time (if applies)</th>
+          <th>Address (City, State, County)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let patient of patientList">
+          <td>{{ patient.resource.id }}</td>
+          <td
+            *ngIf="
+              patient.resource.name && patient.resource.name[0].family;
+              else emptyTd
+            "
+          >
+            {{ patient.resource.name[0].family }}
+          </td>
+
+          <td
+            *ngIf="
+              patient.resource.name && patient.resource.name[0].given;
+              else emptyTd
+            "
+          >
+            {{ patient.resource.name[0].given[0] }}
+          </td>
+          <td *ngIf="patient.resource.gender; else emptyTd">
+            {{ patient.resource.gender }}
+          </td>
+          <td *ngIf="patient.resource.birthDate; else emptyTd">
+            {{ patient.resource.birthDate }}
+          </td>
+          <td *ngIf="patient.resource.deceasedDateTime; else emptyTd">
+            {{ patient.resource.deceasedDateTime }}
+          </td>
+
+          <td *ngIf="patient.resource.address; else emptyTd">
+            {{ patient.resource.address[0].city }},
+            {{ patient.resource.address[0].state }},
+            {{ patient.resource.address[0].country }}
+          </td>
+          <ng-template #emptyTd><td>-</td></ng-template>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <div class="request-time">{{ requestRunTime }}</div> -->
+  </div>
 </div>
+
 <app-footer [requestRunTime]="requestRunTime"></app-footer>
