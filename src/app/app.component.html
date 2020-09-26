@@ -1,42 +1,53 @@
 <div>
   <div class="search-wrapper">
-    <label for="search_name">Search by first or last name:</label>
-    <input
-      type="search"
-      #searchName
-      id="search_name"
-      name="Full Name Search"
-      (keyup)="checkNameValid($event.target.value)"
-    />
+    <div class="search-upper-row">
+      <div class="name-search-wrapper">
+        <label for="search_name">Search by first or last name:</label>
+        <input
+          type="search"
+          #searchName
+          id="search_name"
+          name="Full Name Search"
+          (keyup)="checkNameValid($event.target.value)"
+          (keyup.enter)="search(searchName.value, searchBirth.value)"
+        />
+      </div>
 
-    <label for="search_birth">Search by birthdate:</label>
-    <input
-      #searchBirth
-      type="search"
-      id="search_birth"
-      name="Date"
-      placeholder="YYYY/MM/DD"
-      (keyup)="checkDateValid($event.target.value)"
-    />
+      <div class="date-search-wrapper">
+        <label for="search_birth">Search by birthdate:</label>
+        <input
+          #searchBirth
+          type="search"
+          id="search_birth"
+          name="Date"
+          placeholder="YYYY/MM/DD"
+          (keyup)="checkDateValid($event.target.value)"
+          (keyup.enter)="search(searchName.value, searchBirth.value)"
+        />
+      </div>
 
-    <button
-      (click)="search(searchName.value, searchBirth.value)"
-      type="button"
-      class="search-button"
-      [ngClass]="isSearching ? 'is-searching' : ''"
-    >
-      Search
-    </button>
+      <button
+        (click)="search(searchName.value, searchBirth.value)"
+        type="button"
+        class="search-button"
+        [ngClass]="isSearching ? 'is-searching' : ''"
+      >
+        Search
+      </button>
+    </div>
+
     <div class="error-messages">
-      <span [ngClass]="nameError || dateError ? 'error-visible' : 'error-hide'"
+      <span
+        class="error-main"
+        [ngClass]="nameError || dateError ? 'error-visible' : 'error-hide'"
         >ERROR!</span
       >
       <span [ngClass]="nameError ? 'error-visible' : 'error-hide'"
         >Name cannot contain non-alphabetic characters</span
       >
       <span [ngClass]="dateError ? 'error-visible' : 'error-hide'"
-        >Name cannot contain non-alphabetic characters and has to be in the
-        following format: YYYY/MM/DD</span
+        >Date can only include numerical (0-9) characters and slashes (/) and
+        has to be in the format: YYYY/MM/DD</span
       >
     </div>
   </div>
@@ -50,7 +61,7 @@
           <th>Given Name</th>
           <th>Gender</th>
           <th>Date of Birth</th>
-          <th>Deceased Time (if applies)</th>
+          <th>Deceased Time</th>
           <th>Address (City, State, County)</th>
         </tr>
       </thead>

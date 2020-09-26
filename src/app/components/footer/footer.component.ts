@@ -8,7 +8,7 @@ import { MillisecondsPipe } from "src/app/pipe/milliseconds.pipe";
   providers: [MillisecondsPipe],
 })
 export class FooterComponent implements OnInit {
-  @Input requestRunTime: number;
+  @Input() requestRunTime: number;
   constructor() {}
 
   ngOnInit(): void {}
